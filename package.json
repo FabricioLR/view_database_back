@@ -1,8 +1,9 @@
 {
   "scripts": {
     "dev": "ts-node src/index.ts",
-    "start": "node build/index.js",
-    "test": "jest"
+    "start": "node dist/index.js",
+    "test": "jest",
+    "build": "npm install && tsc"
   },
   "jest": {
     "preset": "ts-jest",

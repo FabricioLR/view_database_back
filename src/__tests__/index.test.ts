@@ -1,4 +1,4 @@
-import app from "../src/app"
+import app from "../app"
 import { describe, it, expect } from "@jest/globals"
 import request from "supertest"
 
