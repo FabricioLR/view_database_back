@@ -90,9 +90,8 @@ router.post("/database", async (request, response) => {
             
             return response.status(200).send({ result })
         }
-    } catch (error) {
-        console.log(error)
-        return response.status(400).send(error)
+    } catch (error: any) {
+        return response.status(400).send({error: error.message})
     }
 })
 
