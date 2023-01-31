@@ -32,9 +32,13 @@ async function GetTables(){
                     values: [],
                     table: table
                 }
+
+                const tableColumns = (await mysqlConnection!.promise().query("SHOW COLUMNS FROM " + table))[0] as any[]
+                if (tableColumns.length > 0) tableColumns.map(column => columns.push(column.Field))
+
                 const values = (await mysqlConnection!.promise().query("SELECT * FROM " + table))[0] as any[]
-                Object.keys(values[0]).map(collumn => columns.push(collumn))
-                Object.values(values).map((value: any) => data.values.push(value))
+                if (values.length > 0) Object.values(values).map((value: any) => data.values.push(value))
+
                 result.database.push(data) 
             }))
         } else {
@@ -44,18 +48,17 @@ async function GetTables(){
                 const data: Data = {
                     columns,
                     values: [],
-                    table: ""
+                    table: table.table_name
                 }
-                if (table.table_name !== "SequelizeMeta" && table.table_name !== "pg_stat_statements"){
-                    const values: QueryArrayResult = await postgresqlConnection!.query(`SELECT * FROM ${table.table_name}`)
-                    data.table = table.table_name
-                    values.fields.map(field => columns.push(field.name))
-                    values.rows.map((row: any) => {
-                        data.values.push(row)
-                    })
 
-                    result.database.push(data)
-                }
+                const values: QueryArrayResult = await postgresqlConnection!.query(`SELECT * FROM ${table.table_name}`)
+                
+                values.fields.map(field => columns.push(field.name))
+                values.rows.map((row: any) => {
+                    data.values.push(row)
+                })
+
+                result.database.push(data)
             }))
         }
         return result

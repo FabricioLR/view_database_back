@@ -36,6 +36,7 @@ class DataBaseController {
 
             return response.status(200).send({ success: true })
         } catch (error) {
+            console.log(error)
             return response.status(400).send({ error })
         }
     }
