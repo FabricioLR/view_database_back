@@ -2,7 +2,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "start": "node build/index.js",
-    "test": "jest",
+    "test": "vitest",
     "build": "npm install && tsc"
   },
   "jest": {
@@ -20,7 +20,8 @@
     "express": "^4.17.2",
     "mysql2": "^2.3.3",
     "pg": "^8.7.1",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "vitest": "^0.28.3"
   },
   "devDependencies": {
     "@jest/globals": "^29.3.1",
