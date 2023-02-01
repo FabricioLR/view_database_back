@@ -3,6 +3,7 @@ import { Connection } from "../services/connection/Connection";
 import DeleteRow from "../services/database/DeleteRow";
 import GetTables from "../services/database/GetTables";
 import SaveRow from "../services/database/SaveRow";
+import UpdateValue from "../services/database/UpdateValue";
 
 class DataBaseController {
     async connection(request: Request, response: Response){
@@ -21,9 +22,9 @@ class DataBaseController {
     async save(request: Request, response: Response){
         const { update, table } = request.body
         try {
-            const result = await SaveRow({ update, table })
+            const row = await SaveRow({ update, table })
             
-            return response.status(200).send({ result })
+            return response.status(200).send({ result: { row } })
         } catch (error) {
             return response.status(400).send({ error })
         }
@@ -37,6 +38,16 @@ class DataBaseController {
             return response.status(200).send({ success: true })
         } catch (error) {
             console.log(error)
+            return response.status(400).send({ error })
+        }
+    }
+    async update(request: Request, response: Response){
+        const { row, update, table } = request.body
+        try {
+            await UpdateValue({ row, table, update})
+            
+            return response.status(200).send({ success: true })
+        } catch (error) {
             return response.status(400).send({ error })
         }
     }

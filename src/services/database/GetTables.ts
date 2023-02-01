@@ -44,6 +44,8 @@ async function GetTables(){
         } else {
             const tables: QueryArrayResult = await postgresqlConnection!.query("SELECT table_name FROM information_schema.tables WHERE table_schema='public'")
             await Promise.all(tables.rows.map(async (table: any) => {
+                if (table.table_name == "SequelizeMeta" || table.table_name == "pg_stat_statements") return
+                
                 const columns: string[] = []
                 const data: Data = {
                     columns,

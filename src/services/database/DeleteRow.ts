@@ -19,7 +19,7 @@ async function DeleteRow(data: DeleteRowData){
             await mysqlConnection.promise().query("SET SQL_SAFE_UPDATES = 0")
             await mysqlConnection.promise().query("DELETE FROM " + data.table + " " + query, values)
         } else {
-            const query = Object.keys(data.row).map((key, index) => index == 0 ? "WHERE `" + key + "` = $" + Number(index + 1) : "AND `" + key + "` = $" + Number(index + 1)).join(" ")
+            const query = Object.keys(data.row).map((key, index) => index == 0 ? `WHERE "${key}" = $${Number(index + 1)}` : `AND "${key}" = $${Number(index + 1)}`).join(" ")
             const values = Object.values(data.row)
             
             await postgresqlConnection!.query("DELETE FROM " + data.table + " " + query, values)
